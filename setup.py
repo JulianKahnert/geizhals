@@ -5,9 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name=name,
-    version="0.0.2",
+    version="0.0.3",
     author="Julian Kahnert",
     author_email="mail@juliankahnert.de",
+    install_requires=[
+        'beautifulsoup4>=4.6.3',
+        'requests>=2.19.1'
+    ],
     description="A parser for the Geizhals.eu website.",
     long_description=long_description,
     long_description_content_type="text/markdown",
