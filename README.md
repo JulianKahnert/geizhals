@@ -1,14 +1,18 @@
 # geizhals
+
 The geizhals library will give you the best price of a product from Geizhals or a related site.
 This information can be used in automations, e.g. to notify you when a price drops.
 
+
 ## Install
-```
+
+```bash
 pip install geizhals
 ```
 
 ## Usage
-```
+
+```python
 from geizhals import Geizhals
 
 # setup the product data

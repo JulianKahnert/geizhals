@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name=name,
-    version="0.0.1",
+    version="0.0.2",
     author="Julian Kahnert",
     author_email="mail@juliankahnert.de",
     description="A parser for the Geizhals.eu website.",
