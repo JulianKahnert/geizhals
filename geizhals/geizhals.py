@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Parse prices of a device from the Geizhals website."""
 import logging
 import re
 from enum import Enum
@@ -11,6 +12,8 @@ _REGEX = r'\D\s(\d*)[\,|\.](\d*)'
 
 
 class Domain(Enum):
+    """Possible localisations."""
+
     AT = 'geizhals.at'
     EU = 'geizhals.eu'
     DE = 'geizhals.de'
@@ -19,14 +22,18 @@ class Domain(Enum):
 
 
 class Device():
+    """Device data which gets parsed by Geizhals."""
+
     name = ''
     prices = []
     price_currency = ''
 
     def __repr__(self):
+        """Call pretty print to get all informaiton."""
         return self.__str__()
 
     def __str__(self):
+        """Pretty-Print all the device data."""
         return """
 Name:       {}
 Prices:     {}
@@ -37,20 +44,23 @@ Currency:   {}
 
 
 class Geizhals():
+    """Implementation of Geizhals."""
+
     locale = ''
     product_id = ''
 
     # save parsed data
     device = Device()
 
-    def __init__(self, ID_or_URL, locale='DE'):
+    def __init__(self, id_or_url, locale='DE'):
         """Initialize the sensor."""
         self.locale = Domain[locale].value
 
         # get the id from a URL
-        self.product_id = self._url2id(ID_or_URL)
+        self.product_id = _url2id(id_or_url)
 
     def parse(self):
+        """Get new data, parses it and returns a device."""
         # fetch data
         sess = requests.session()
         request = sess.get('https://{}/{}'.format(self.locale,
@@ -78,17 +88,18 @@ class Geizhals():
 
         return self.device
 
-    def _url2id(self, ID_or_URL):
-        try:
-            sess = requests.session()
-            request = sess.get(ID_or_URL,
-                               allow_redirects=True,
-                               timeout=1)
-        except requests.exceptions.MissingSchema:
-            # assuming a valid product_id
-            return ID_or_URL
 
-        # get product_id from valid url
-        soup = bs4.BeautifulSoup(request.text, 'html.parser')
-        phistURL = soup.select('.productpage__overview-links--pricehistory')[0].attrs['href']
-        return re.search(r'phist\=(\d+)$', phistURL).group(1)
+def _url2id(id_or_url):
+    try:
+        sess = requests.session()
+        request = sess.get(id_or_url,
+                           allow_redirects=True,
+                           timeout=1)
+    except requests.exceptions.MissingSchema:
+        # assuming a valid product_id
+        return id_or_url
+
+    # get product_id from valid url
+    soup = bs4.BeautifulSoup(request.text, 'html.parser')
+    phist_url = soup.select('.productpage__overview-links--pricehistory')[0].attrs['href']
+    return re.search(r'phist\=(\d+)$', phist_url).group(1)

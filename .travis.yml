@@ -4,7 +4,6 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7"
   - "3.7-dev" # 3.7 development branch
 
 install:
@@ -18,7 +17,7 @@ install:
 script:
   # linting tests
   - flake8 --config=.flake8.ini geizhals/
-  - pylint geizhals/
+  - pylint  --disable=R0903 geizhals/
   - pydocstyle geizhals/
 
 notifications:

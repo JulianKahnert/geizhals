@@ -1,10 +1,10 @@
 import setuptools
-from geizhals import name
+from geizhals import NAME
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name=name,
+    name=NAME,
     version="0.0.4",
     author="Julian Kahnert",
     author_email="mail@juliankahnert.de",

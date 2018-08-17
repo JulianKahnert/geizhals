@@ -1,3 +1,4 @@
-from .geizhals import Geizhals
+"""Init file for Geizhals."""
+from .geizhals import (Geizhals, Device)
 
-name = "geizhals"
+NAME = "geizhals"
