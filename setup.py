@@ -5,7 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name=NAME,
-    version="0.0.5",
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     author="Julian Kahnert",
     author_email="mail@juliankahnert.de",
     install_requires=[
