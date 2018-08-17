@@ -36,7 +36,6 @@ Currency:   {}
 class Geizhals():
     locale = ''
     product_id = ''
-    _soup = None
 
     # save parsed data
     device = Device()
@@ -49,29 +48,29 @@ class Geizhals():
         # get the id from a URL
         self.product_id = self._url2id(ID_or_URL)
 
+    def parse(self):
         # fetch data
         sess = requests.session()
         request = sess.get('https://{}/{}'.format(self.locale,
                                                   self.product_id),
                            allow_redirects=True,
                            timeout=1)
-        self._soup = bs4.BeautifulSoup(request.text, 'html.parser')
+        soup = bs4.BeautifulSoup(request.text, 'html.parser')
 
-    def parse(self):
         # parse name
-        raw = self._soup.find('h1', attrs={'class': 'gh-headline'})
+        raw = soup.find('h1', attrs={'class': 'gh-headline'})
         self.device.name = raw.string.replace('\n', '')
 
         # parse prices
         self.device.prices = []
-        for tmp in self._soup.select('div.offer__price .gh_price'):
+        for tmp in soup.select('div.offer__price .gh_price'):
             matches = re.search(_REGEX, tmp.string)
             raw = '{}.{}'.format(matches.group(1),
                                  matches.group(2))
             self.device.prices += [float(raw)]
 
         # parse unit
-        price_match = self._soup.find('span', attrs={'class': 'gh_price'})
+        price_match = soup.find('span', attrs={'class': 'gh_price'})
         matches = re.search(r'€|£|PLN', price_match.string)
         self.device.price_currency = matches.group()
 

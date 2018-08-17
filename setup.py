@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name=name,
-    version="0.0.3",
+    version="0.0.4",
     author="Julian Kahnert",
     author_email="mail@juliankahnert.de",
     install_requires=[
