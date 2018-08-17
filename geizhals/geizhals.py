@@ -2,13 +2,13 @@
 import logging
 import re
 from enum import Enum
-from urllib.parse import urlparse
 
 import bs4
 import requests
 
 _LOGGER = logging.getLogger(__name__)
 _REGEX = r'\D\s(\d*)[\,|\.](\d*)'
+
 
 class Domain(Enum):
     AT = 'geizhals.at'
@@ -17,13 +17,15 @@ class Domain(Enum):
     UK = 'skinflint.co.uk'
     PL = 'cenowarka.pl'
 
+
 class Device():
     name = ''
     prices = []
     price_currency = ''
 
     def __repr__(self):
-         return self.__str__()
+        return self.__str__()
+
     def __str__(self):
         return """
 Name:       {}
@@ -33,6 +35,7 @@ Currency:   {}
                    self.prices,
                    self.price_currency)
 
+
 class Geizhals():
     locale = ''
     product_id = ''
@@ -40,8 +43,7 @@ class Geizhals():
     # save parsed data
     device = Device()
 
-
-    def __init__(self, ID_or_URL, locale = 'DE'):
+    def __init__(self, ID_or_URL, locale='DE'):
         """Initialize the sensor."""
         self.locale = Domain[locale].value
 
