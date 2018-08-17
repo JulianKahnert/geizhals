@@ -1,6 +1,6 @@
 """Init file for Geizhals."""
-from .geizhals import (Geizhals, Device)
 from pkg_resources import get_distribution, DistributionNotFound
+from .geizhals import Device, Geizhals
 
 NAME = "geizhals"
 try:
