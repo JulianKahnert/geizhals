@@ -67,6 +67,11 @@ class Geizhals():
                                                   self.product_id),
                            allow_redirects=True,
                            timeout=1)
+        sess.close()
+
+        # raise exception, e.g. if we are blocked because of too many requests
+        request.raise_for_status()
+
         soup = bs4.BeautifulSoup(request.text, 'html.parser')
 
         # parse name
@@ -95,6 +100,11 @@ def _url2id(id_or_url):
         request = sess.get(id_or_url,
                            allow_redirects=True,
                            timeout=1)
+        sess.close()
+
+        # raise exception, e.g. if we are blocked because of too many requests
+        request.raise_for_status()
+
     except requests.exceptions.MissingSchema:
         # assuming a valid product_id
         return id_or_url
