@@ -66,7 +66,7 @@ class Geizhals():
         request = sess.get('https://{}/{}'.format(self.locale,
                                                   self.product_id),
                            allow_redirects=True,
-                           timeout=1)
+                           timeout=2)
         sess.close()
 
         # raise exception, e.g. if we are blocked because of too many requests
@@ -99,7 +99,7 @@ def _url2id(id_or_url):
         sess = requests.session()
         request = sess.get(id_or_url,
                            allow_redirects=True,
-                           timeout=1)
+                           timeout=2)
         sess.close()
 
         # raise exception, e.g. if we are blocked because of too many requests
