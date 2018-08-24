@@ -1,10 +1,9 @@
 import setuptools
-from geizhals import NAME
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name=NAME,
+    name="geizhals",
     use_scm_version=True,
     setup_requires=['setuptools_scm'],
     author="Julian Kahnert",

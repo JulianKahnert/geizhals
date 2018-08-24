@@ -4,7 +4,7 @@ import logging
 import re
 from enum import Enum
 
-import bs4
+from bs4 import BeautifulSoup
 import requests
 
 _LOGGER = logging.getLogger(__name__)
@@ -66,8 +66,13 @@ class Geizhals():
         request = sess.get('https://{}/{}'.format(self.locale,
                                                   self.product_id),
                            allow_redirects=True,
-                           timeout=1)
-        soup = bs4.BeautifulSoup(request.text, 'html.parser')
+                           timeout=2)
+        sess.close()
+
+        # raise exception, e.g. if we are blocked because of too many requests
+        request.raise_for_status()
+
+        soup = BeautifulSoup(request.text, 'html.parser')
 
         # parse name
         raw = soup.find('h1', attrs={'class': 'gh-headline'})
@@ -94,12 +99,17 @@ def _url2id(id_or_url):
         sess = requests.session()
         request = sess.get(id_or_url,
                            allow_redirects=True,
-                           timeout=1)
+                           timeout=2)
+        sess.close()
+
+        # raise exception, e.g. if we are blocked because of too many requests
+        request.raise_for_status()
+
     except requests.exceptions.MissingSchema:
         # assuming a valid product_id
         return id_or_url
 
     # get product_id from valid url
-    soup = bs4.BeautifulSoup(request.text, 'html.parser')
+    soup = BeautifulSoup(request.text, 'html.parser')
     phist_url = soup.select('.productpage__overview-links--pricehistory')[0].attrs['href']
     return re.search(r'phist\=(\d+)$', phist_url).group(1)
