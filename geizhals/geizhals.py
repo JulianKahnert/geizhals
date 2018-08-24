@@ -4,7 +4,7 @@ import logging
 import re
 from enum import Enum
 
-import bs4
+from bs4 import BeautifulSoup
 import requests
 
 _LOGGER = logging.getLogger(__name__)
@@ -72,7 +72,7 @@ class Geizhals():
         # raise exception, e.g. if we are blocked because of too many requests
         request.raise_for_status()
 
-        soup = bs4.BeautifulSoup(request.text, 'html.parser')
+        soup = BeautifulSoup(request.text, 'html.parser')
 
         # parse name
         raw = soup.find('h1', attrs={'class': 'gh-headline'})
@@ -110,6 +110,6 @@ def _url2id(id_or_url):
         return id_or_url
 
     # get product_id from valid url
-    soup = bs4.BeautifulSoup(request.text, 'html.parser')
+    soup = BeautifulSoup(request.text, 'html.parser')
     phist_url = soup.select('.productpage__overview-links--pricehistory')[0].attrs['href']
     return re.search(r'phist\=(\d+)$', phist_url).group(1)
