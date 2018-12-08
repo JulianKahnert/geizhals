@@ -24,9 +24,11 @@ class Domain(Enum):
 class Device():
     """Device data which gets parsed by Geizhals."""
 
-    name = ''
-    prices = []
-    price_currency = ''
+    def __init__(self):
+        """Initialize device data."""
+        self.name = ''
+        self.prices = []
+        self.price_currency = ''
 
     def __repr__(self):
         """Call pretty print to get all informaiton."""
@@ -46,18 +48,15 @@ Currency:   {}
 class Geizhals():
     """Implementation of Geizhals."""
 
-    locale = ''
-    product_id = ''
-
-    # save parsed data
-    device = Device()
-
     def __init__(self, id_or_url, locale='DE'):
         """Initialize the sensor."""
         self.locale = Domain[locale].value
 
         # get the id from a URL
         self.product_id = _url2id(id_or_url)
+
+        # save parsed data
+        self.device = Device()
 
     def parse(self):
         """Get new data, parses it and returns a device."""
@@ -111,5 +110,6 @@ def _url2id(id_or_url):
 
     # get product_id from valid url
     soup = BeautifulSoup(request.text, 'html.parser')
-    phist_url = soup.select('.productpage__overview-links--pricehistory')[0].attrs['href']
+    phist_url = soup.select(
+        '.productpage__overview-links--pricehistory')[0].attrs['href']
     return re.search(r'phist\=(\d+)$', phist_url).group(1)
